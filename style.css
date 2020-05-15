@@ -2,6 +2,7 @@ body {
   background-color: teal;
   color: white;
   overscroll-behavior: contain;
+  text-align: center;
 }
 
 input[type="number"] {
@@ -11,6 +12,7 @@ input[type="number"] {
 #board {
   position: relative;
   outline: 1px solid;
+  margin: auto;
 }
 
 .tile {
