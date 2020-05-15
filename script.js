@@ -5,29 +5,33 @@ let imgSrc = image.files[0]
   : "./stamp.jpg";
 let cols = columns.value || 6;
 let puzzleWidthPx = width.value || 600;
+let flag = false;
 
 // const image = document.getElementById("image");
 // const columns = document.getElementById("columns");
 // const width = document.getElementById("width");
+// const play = document.getElementById("play");
 // const board = document.getElementById("board");
 
 image.onchange = () => {
   imgSrc = URL.createObjectURL(image.files[0]);
-  drawPuzzle();
+  drawPuzzle(flag);
 };
 
 columns.onchange = () => {
   cols = columns.value;
-  drawPuzzle();
+  drawPuzzle(flag);
 };
 
 width.onchange = () => {
   puzzleWidthPx = width.value;
-  drawPuzzle();
+  drawPuzzle(flag);
 };
 
-scatter.onclick = () => {
-  drawPuzzle("scatter");
+play.onclick = () => {
+  flag = !flag;
+  play.innerText = flag ? "Solve!" : "Scatter!";
+  drawPuzzle(flag);
 };
 
 const drawPuzzle = async (flag) => {
@@ -50,17 +54,20 @@ const drawPuzzle = async (flag) => {
     const randomY = randomSide
       ? Math.trunc(Math.random() * (boardSize.Y + tileSize.Y))
       : Math.trunc((Math.random() * tileSize.Y) / 2) + boardSize.Y;
+
     const img = new Image();
     img.src = tile.base64Url;
     img.style.left = flag ? `${randomX}px` : `${tile.leftOffset}px`;
     img.style.top = flag ? `${randomY}px` : `${tile.topOffset}px`;
     img.className = "tile";
+
     img.ontouchmove = (e) => {
       e.preventDefault();
       img.style.left = `${e.touches[0].pageX - tileSize.X * 0.75}px`;
       img.style.top = `${e.touches[0].pageY - tileSize.Y * 0.75}px`;
       img.style.zIndex = ++z;
     };
+
     img.ontouchend = (e) => {
       const x = e.changedTouches[0].pageX - tileSize.X / 4;
       const y = e.changedTouches[0].pageY - tileSize.Y / 4;
@@ -69,8 +76,9 @@ const drawPuzzle = async (flag) => {
         img.style.top = `${Math.trunc(y / tileSize.Y) * tileSize.Y}px`;
       }
     };
+
     board.appendChild(img);
   });
 };
 
-drawPuzzle();
+drawPuzzle(flag);
