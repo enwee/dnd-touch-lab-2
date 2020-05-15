@@ -33,9 +33,10 @@ const drawPuzzle = async () => {
   //prettier-ignore
   const { boardSize, tileSize, tilePicArray }
       = await jigsaw(imgSrc, cols, puzzleWidthPx).catch(alert);
-
-  // board.style.minHeight = `${boardSize.Y + tileSize.Y / 2}px`;
-  // board.style.maxWidth = `${Math.ceil(tileSize.X * 1.5) * cols}px`;
+  board.style.width = `${boardSize.X + tileSize.X / 2}px`;
+  board.style.height = `${boardSize.Y + tileSize.Y / 2}px`;
+  board.style.outlineOffset = `-${tileSize.X / 4 + 1}px`;
+  let z = 0;
 
   tilePicArray.forEach((tile, index) => {
     const img = new Image();
@@ -44,8 +45,18 @@ const drawPuzzle = async () => {
     img.style.top = `${tile.topOffset}px`;
     img.className = "tile";
     img.ontouchmove = (e) => {
+      e.preventDefault();
       img.style.left = `${e.touches[0].pageX - tileSize.X * 0.75}px`;
       img.style.top = `${e.touches[0].pageY - tileSize.Y * 0.75}px`;
+      img.style.zIndex = ++z;
+    };
+    img.ontouchend = (e) => {
+      const x = e.changedTouches[0].pageX - tileSize.X / 4;
+      const y = e.changedTouches[0].pageY - tileSize.Y / 4;
+      if (x > 0 && x < boardSize.X && y > 0 && y < boardSize.Y) {
+        img.style.left = `${Math.trunc(x / tileSize.X) * tileSize.X}px`;
+        img.style.top = `${Math.trunc(y / tileSize.Y) * tileSize.Y}px`;
+      }
     };
     board.appendChild(img);
   });

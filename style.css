@@ -9,12 +9,9 @@ input[type="number"] {
 
 #board {
   position: relative;
+  outline: 1px solid;
 }
 
 .tile {
   position: absolute;
 }
-
-/* #picture:checked ~ #board > .tile {
-  position: absolute;
-} */
