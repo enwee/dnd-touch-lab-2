@@ -26,7 +26,11 @@ width.onchange = () => {
   drawPuzzle();
 };
 
-const drawPuzzle = async () => {
+scatter.onclick = () => {
+  drawPuzzle("scatter");
+};
+
+const drawPuzzle = async (flag) => {
   while (board.firstChild) {
     board.removeChild(board.lastChild);
   }
@@ -36,14 +40,20 @@ const drawPuzzle = async () => {
   board.style.width = `${boardSize.X + tileSize.X / 2}px`;
   board.style.height = `${boardSize.Y + tileSize.Y / 2}px`;
   board.style.outlineOffset = `-${tileSize.X / 4 + 1}px`;
-  let z = 1;
+  let z = 0;
 
   tilePicArray.forEach((tile, index) => {
+    const randomSide = Math.random() < 0.5;
+    const randomX = randomSide
+      ? Math.trunc((Math.random() * tileSize.X) / 2) + boardSize.X
+      : Math.trunc(Math.random() * (boardSize.X + tileSize.X));
+    const randomY = randomSide
+      ? Math.trunc(Math.random() * (boardSize.Y + tileSize.Y))
+      : Math.trunc((Math.random() * tileSize.Y) / 2) + boardSize.Y;
     const img = new Image();
     img.src = tile.base64Url;
-    img.style.left = `${tile.leftOffset}px`;
-    img.style.top = `${tile.topOffset}px`;
-    img.style.zIndex = 1; //safari?
+    img.style.left = flag ? `${randomX}px` : `${tile.leftOffset}px`;
+    img.style.top = flag ? `${randomY}px` : `${tile.topOffset}px`;
     img.className = "tile";
     img.ontouchmove = (e) => {
       e.preventDefault();
