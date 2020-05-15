@@ -67,7 +67,7 @@ export default async (imgSrc, boardCols, boardPxWidth) => {
     canvasCtx.clip();
     //prettier-ignore
     canvasCtx.drawImage(scaledPic,
-        x - tileSizeX*0.25, y - tileSizeY*0.25, canvas.width, canvas.height,
+        x - tileSizeX / 4, y - tileSizeY / 4, canvas.width, canvas.height,
         -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
 
     return canvas.toDataURL();
