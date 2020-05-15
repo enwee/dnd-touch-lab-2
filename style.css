@@ -1,6 +1,7 @@
 body {
   background-color: teal;
   color: white;
+  overscroll-behavior: contain;
 }
 
 input[type="number"] {

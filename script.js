@@ -36,13 +36,14 @@ const drawPuzzle = async () => {
   board.style.width = `${boardSize.X + tileSize.X / 2}px`;
   board.style.height = `${boardSize.Y + tileSize.Y / 2}px`;
   board.style.outlineOffset = `-${tileSize.X / 4 + 1}px`;
-  let z = 0;
+  let z = 1;
 
   tilePicArray.forEach((tile, index) => {
     const img = new Image();
     img.src = tile.base64Url;
     img.style.left = `${tile.leftOffset}px`;
     img.style.top = `${tile.topOffset}px`;
+    img.style.zIndex = 1; //safari?
     img.className = "tile";
     img.ontouchmove = (e) => {
       e.preventDefault();
