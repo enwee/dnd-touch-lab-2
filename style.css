@@ -1,0 +1,20 @@
+body {
+  background-color: teal;
+  color: white;
+}
+
+input[type="number"] {
+  width: 4em;
+}
+
+#board {
+  position: relative;
+}
+
+.tile {
+  position: absolute;
+}
+
+/* #picture:checked ~ #board > .tile {
+  position: absolute;
+} */
