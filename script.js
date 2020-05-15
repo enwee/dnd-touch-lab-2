@@ -51,13 +51,15 @@ const drawPuzzle = async (flag) => {
       ? Math.trunc(Math.random() * (boardSize.Y + tileSize.Y))
       : Math.trunc((Math.random() * tileSize.Y) / 2) + boardSize.Y;
     const img = new Image();
+    // NEWLY ADDED: account for offset after centering board
+    const offsetLeftValue = document.getElementById('board').offsetLeft
     img.src = tile.base64Url;
     img.style.left = flag ? `${randomX}px` : `${tile.leftOffset}px`;
     img.style.top = flag ? `${randomY}px` : `${tile.topOffset}px`;
     img.className = "tile";
     img.ontouchmove = (e) => {
       e.preventDefault();
-      img.style.left = `${e.touches[0].pageX - tileSize.X * 0.75}px`;
+      img.style.left = `${e.touches[0].pageX - tileSize.X * 0.75 - offsetLeftValue}px`;
       img.style.top = `${e.touches[0].pageY - tileSize.Y * 0.75}px`;
       img.style.zIndex = ++z;
     };
