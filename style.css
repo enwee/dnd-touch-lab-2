@@ -1,16 +1,55 @@
 body {
-  background-color: teal;
+  font-family: arial, sans-serif;
+  font-size: 0.8em;
   color: white;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
   overscroll-behavior: contain;
 }
 
-input[type="number"] {
-  width: 3em;
+#columns {
+  width: 2.5em;
+}
+
+#width {
+  width: 3.5em;
+}
+
+.btn {
+  display: inline-block;
+  line-height: 1.7em;
+  padding: 0 0.62em;
+  border: 1px solid #666;
+  border-radius: 0.25em;
+  background-image: linear-gradient(to bottom, #fff, #ccc);
+  box-shadow: inset 0 0 0.1em #fff, 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
+  color: black;
+}
+
+.hidden {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
 }
 
 #board {
   position: relative;
   outline: 1px solid;
+}
+
+.hint {
+  position: absolute;
+  opacity: 20%;
+  visibility: hidden;
+}
+
+#cheat:checked ~ #board {
+  outline: none;
+}
+
+#cheat:checked ~ #board > .hint {
+  visibility: visible;
 }
 
 .tile {

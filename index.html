@@ -8,14 +8,21 @@
     <script type="module" src="script.js" defer></script>
   </head>
   <body>
-    Columns
+    <label for="columns">Columns</label>
     <input type="number" id="columns" min="1" max="12" value="6" />
-    &nbsp Width(px)
+    &nbsp
+    <label for="width">Width(px)</label>
     <!-- prettier-ignore -->
     <input type="number" id="width" min="300" max="1200" value="600" step="50"/>
     &nbsp
-    <input type="file" id="image" accept="image/*" />
-    <button id="play">Play!</button>
+    <label for="image" class="btn">Choose Image</label>
+    <input type="file" id="image" accept="image/*" class="hidden" />
+    &nbsp
+    <label for="gameStart" id="play" class="btn">Play!</label>
+    <button id="gameStart" class="hidden"></button>
+    &nbsp
+    <input type="checkbox" id="cheat" />
+    <label for="cheat">Cheat</label>
     <div id="board"></div>
   </body>
 </html>
