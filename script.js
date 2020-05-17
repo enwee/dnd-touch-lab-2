@@ -4,7 +4,7 @@ let imgSrc = image.files[0]
   ? URL.createObjectURL(image.files[0])
   : "./stamp.jpg";
 puzzleCols.value = 6;
-puzzleWidth.value = Math.trunc(document.body.clientWidth * 0.7);
+puzzleWidth.value = Math.trunc(document.body.clientWidth * 0.8);
 let flag = false;
 const bgColor = ["teal", "purple", "brown", "steelblue"];
 
@@ -58,10 +58,10 @@ const startGame = async () => {
     const scatterArea = [
       {
         x: randomInt(boardSize.X - tileSize.X),
-        y: randomInt(tileSize.Y * 1.5) + boardSize.Y,
+        y: randomInt(tileSize.Y * 1.5) + boardSize.Y - tileSize.Y / 2,
       },
       {
-        x: randomInt(tileSize.X * 1.5) + boardSize.X,
+        x: randomInt(tileSize.X * 1.5) + boardSize.X - tileSize.X / 2,
         y: randomInt(boardSize.Y - tileSize.Y),
       },
     ];
@@ -70,7 +70,7 @@ const startGame = async () => {
     img.src = tile.base64Url;
     img.style.left = flag ? `${scatterArea[side].x}px` : `${tile.leftOffset}px`;
     img.style.top = flag ? `${scatterArea[side].y}px` : `${tile.topOffset}px`;
-    img.style.zIndex = randomInt(tilePicArray.length);
+    img.style.zIndex = randomInt(tilePicArray.length) + 1;
     img.className = "tile";
     board.appendChild(img);
 
@@ -83,11 +83,14 @@ const startGame = async () => {
       const x = pageX - tileSize.X / 4 - board.offsetLeft;
       const y = pageY - tileSize.Y / 4 - board.offsetTop;
       if (x > 0 && x < boardSize.X && y > 0 && y < boardSize.Y) {
-        img.style.left = `${Math.trunc(x / tileSize.X) * tileSize.X}px`;
-        img.style.top = `${Math.trunc(y / tileSize.Y) * tileSize.Y}px`;
-        completed[index] =
-          parseInt(img.style.left) === tile.leftOffset &&
-          parseInt(img.style.top) === tile.topOffset;
+        const snapOnLeft = Math.trunc(x / tileSize.X) * tileSize.X;
+        const snapOnTop = Math.trunc(y / tileSize.Y) * tileSize.Y;
+        if (snapOnLeft === tile.leftOffset && snapOnTop === tile.topOffset) {
+          completed[index] = true;
+          img.style.left = `${snapOnLeft}px`;
+          img.style.top = `${snapOnTop}px`;
+          img.style.zIndex = 0;
+        }
         if (completed.every((tile) => tile)) {
           flag = false;
           play.innerText = "Play!";
@@ -100,9 +103,11 @@ const startGame = async () => {
 
     img.onmousedown = (e) => {
       e.preventDefault(); //cos ff draggable="false" !working
-      isDragging = true;
-      moveTile(e.pageX, e.pageY);
-      img.style.zIndex = z++;
+      if (!completed[index]) {
+        isDragging = true;
+        moveTile(e.pageX, e.pageY);
+        img.style.zIndex = ++z;
+      }
     };
 
     img.onmousemove = (e) => {
@@ -117,13 +122,17 @@ const startGame = async () => {
     };
     //prettier-ignore
     img.addEventListener("touchstart", (e) => {
-      moveTile(e.touches[0].pageX, e.touches[0].pageY);
-      img.style.zIndex = z++;
+      if (!completed[index]) {
+        moveTile(e.touches[0].pageX, e.touches[0].pageY);
+        img.style.zIndex = ++z;
+      }
     }, {passive: true});
 
     img.ontouchmove = (e) => {
       e.preventDefault();
-      moveTile(e.touches[0].pageX, e.touches[0].pageY);
+      if (!completed[index]) {
+        moveTile(e.touches[0].pageX, e.touches[0].pageY);
+      }
     };
 
     img.ontouchend = (e) => {
