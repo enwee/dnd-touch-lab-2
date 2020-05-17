@@ -1,18 +1,12 @@
 import jigsaw from "./jigsaw.js";
 
-const bgColor = ["teal", "purple", "brown", "steelblue"];
-const images = ["stamp", "hand", "greedy", "water"];
-const randomInt = (range) => Math.floor(Math.random() * range);
-
 let imgSrc = image.files[0]
   ? URL.createObjectURL(image.files[0])
-  : `./images/${images[randomInt(images.length)]}.jpg`;
+  : "./stamp.jpg";
 let cols = columns.value || 6;
 let puzzleWidthPx = width.value || 600;
 let flag = false;
-
-const initRnd = randomInt(4);
-document.body.style.background = bgColor[initRnd];
+const bgColor = ["teal", "purple", "brown", "steelblue"];
 
 image.onchange = () => {
   imgSrc = URL.createObjectURL(image.files[0]);
@@ -61,6 +55,7 @@ const startGame = async () => {
   board.appendChild(img);
 
   tilePicArray.forEach((tile, index) => {
+    const randomInt = (range) => Math.floor(Math.random() * range);
     const side = randomInt(2);
     const scatterArea = [
       {
@@ -100,7 +95,7 @@ const startGame = async () => {
           play.innerText = "Play!";
           completed.fill(false);
           bgColor.push(bgColor.shift());
-          document.body.style.background = bgColor[initRnd];
+          document.body.style.background = bgColor[0];
         }
       }
     };
