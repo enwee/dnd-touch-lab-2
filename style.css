@@ -9,11 +9,11 @@ body {
   overscroll-behavior: contain;
 }
 
-#columns {
+#puzzleCols {
   width: 2.5em;
 }
 
-#width {
+#puzzleWidth {
   width: 3.5em;
 }
 

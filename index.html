@@ -8,12 +8,12 @@
     <script type="module" src="script.js" defer></script>
   </head>
   <body>
-    <label for="columns">Columns</label>
-    <input type="number" id="columns" min="1" max="12" value="6" />
+    <label for="puzzleCols">Columns</label>
+    <input type="number" id="puzzleCols" min="1" max="12" />
     &nbsp
-    <label for="width">Width(px)</label>
+    <label for="puzzleWidth">Width(px)</label>
     <!-- prettier-ignore -->
-    <input type="number" id="width" min="300" max="1200" value="600" step="50"/>
+    <input type="number" id="puzzleWidth" min="300" max="1200" step="50"/>
     &nbsp
     <label for="image" class="btn">Choose Image</label>
     <input type="file" id="image" accept="image/*" class="hidden" />

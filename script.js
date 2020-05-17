@@ -3,8 +3,8 @@ import jigsaw from "./jigsaw.js";
 let imgSrc = image.files[0]
   ? URL.createObjectURL(image.files[0])
   : "./stamp.jpg";
-let cols = columns.value || 6;
-let puzzleWidthPx = width.value || 600;
+puzzleCols.value = 6;
+puzzleWidth.value = Math.trunc(document.body.clientWidth * 0.7);
 let flag = false;
 const bgColor = ["teal", "purple", "brown", "steelblue"];
 
@@ -13,13 +13,11 @@ image.onchange = () => {
   startGame();
 };
 
-columns.onchange = () => {
-  cols = columns.value;
+puzzleCols.onchange = () => {
   startGame();
 };
 
-width.onchange = () => {
-  puzzleWidthPx = width.value;
+puzzleWidth.onchange = () => {
   startGame();
 };
 
@@ -35,7 +33,7 @@ const startGame = async () => {
   }
   //prettier-ignore
   const { boardSize, tileSize, tilePicArray }
-      = await jigsaw(imgSrc, cols, puzzleWidthPx).catch(alert);
+      = await jigsaw(imgSrc, puzzleCols.value, puzzleWidth.value).catch(alert);
   board.style.width = `${boardSize.X + tileSize.X / 2}px`;
   board.style.height = `${boardSize.Y + tileSize.Y / 2}px`;
   board.style.outlineOffset = `-${(tileSize.X + tileSize.Y) / 8 + 2}px`;
@@ -60,10 +58,10 @@ const startGame = async () => {
     const scatterArea = [
       {
         x: randomInt(boardSize.X - tileSize.X),
-        y: randomInt(tileSize.Y * 1.5) + boardSize.Y + tileSize.Y / 4,
+        y: randomInt(tileSize.Y * 1.5) + boardSize.Y,
       },
       {
-        x: randomInt(tileSize.X * 1.5) + boardSize.X + tileSize.X / 4,
+        x: randomInt(tileSize.X * 1.5) + boardSize.X,
         y: randomInt(boardSize.Y - tileSize.Y),
       },
     ];
