@@ -5,7 +5,7 @@ let imgSrc = image.files[0]
   : "./stamp.jpg";
 puzzleCols.value = 6;
 puzzleWidth.value = Math.trunc(document.body.clientWidth * 0.8);
-let flag = false;
+let scatter = false;
 const bgColor = ["teal", "purple", "brown", "steelblue"];
 
 image.onchange = () => {
@@ -22,9 +22,12 @@ puzzleWidth.onchange = () => {
 };
 
 play.onclick = () => {
-  flag = !flag;
-  play.innerText = flag ? "Solve!" : "Scatter!";
-  startGame();
+  scatter = !scatter;
+  play.innerText = scatter ? "Solve!" : "Scatter!";
+  const tiles = document.body.getElementsByClassName("tile");
+  for (let index = 0; index < tiles.length; index++) {
+    tiles[index].animateTile();
+  }
 };
 
 const startGame = async () => {
@@ -49,30 +52,46 @@ const startGame = async () => {
   img.style.left = `${tileSize.X / 4}px`;
   img.style.top = `${tileSize.Y / 4}px`;
   img.className = "hint";
-  img.draggable = false;
+  img.draggable = false; //!working on ff
   board.appendChild(img);
 
   tilePicArray.forEach((tile, index) => {
+    const img = new Image();
     const randomInt = (range) => Math.floor(Math.random() * range);
-    const side = randomInt(2);
     const scatterArea = [
       {
-        x: randomInt(boardSize.X - tileSize.X),
-        y: randomInt(tileSize.Y * 1.5) + boardSize.Y - tileSize.Y / 2,
+        x: () => randomInt(boardSize.X - tileSize.X),
+        y: () => randomInt(tileSize.Y) + boardSize.Y - tileSize.Y / 2,
       },
       {
-        x: randomInt(tileSize.X * 1.5) + boardSize.X - tileSize.X / 2,
-        y: randomInt(boardSize.Y - tileSize.Y),
+        x: () => randomInt(tileSize.X) + boardSize.X - tileSize.X / 2,
+        y: () => randomInt(boardSize.Y - tileSize.Y),
+      },
+      {
+        x: () => -randomInt(tileSize.X / 2) - tileSize.X / 2,
+        y: () => randomInt(boardSize.Y - tileSize.Y),
       },
     ];
 
-    const img = new Image();
+    img.animateTile = () => {
+      img.style.transition = "all 0.5s ease-in-out";
+      if (scatter) {
+        const side = randomInt(3);
+        img.style.left = `${scatterArea[side].x()}px`;
+        img.style.top = `${scatterArea[side].y()}px`;
+        img.style.zIndex = randomInt(tilePicArray.length) + 1;
+      } else {
+        img.style.left = `${tile.leftOffset}px`;
+        img.style.top = `${tile.topOffset}px`;
+      }
+      setTimeout(() => (img.style.transition = "none"), 500);
+      completed.fill(false);
+    };
+
     img.src = tile.base64Url;
-    img.style.left = flag ? `${scatterArea[side].x}px` : `${tile.leftOffset}px`;
-    img.style.top = flag ? `${scatterArea[side].y}px` : `${tile.topOffset}px`;
-    img.style.zIndex = randomInt(tilePicArray.length) + 1;
     img.className = "tile";
     board.appendChild(img);
+    img.animateTile();
 
     const moveTile = (pageX, pageY) => {
       img.style.left = `${pageX - tileSize.X * 0.75 - board.offsetLeft}px`;
@@ -87,12 +106,14 @@ const startGame = async () => {
         const snapOnTop = Math.trunc(y / tileSize.Y) * tileSize.Y;
         if (snapOnLeft === tile.leftOffset && snapOnTop === tile.topOffset) {
           completed[index] = true;
+          img.style.transition = "all 0.1s ease-in-out";
           img.style.left = `${snapOnLeft}px`;
           img.style.top = `${snapOnTop}px`;
           img.style.zIndex = 0;
+          setTimeout(() => (img.style.transition = "none"), 100);
         }
         if (completed.every((tile) => tile)) {
-          flag = false;
+          scatter = false;
           play.innerText = "Play!";
           completed.fill(false);
           bgColor.push(bgColor.shift());

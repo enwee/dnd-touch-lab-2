@@ -37,6 +37,7 @@ body {
 #board {
   position: relative;
   outline: 1px solid;
+  margin: 0 auto;
 }
 
 .hint {
