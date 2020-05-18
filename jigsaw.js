@@ -88,8 +88,10 @@ export default async (imgSrc, boardCols, boardPxWidth) => {
   }
 
   return {
-    boardSize: { X: boardSizeX, Y: boardSizeY },
-    tileSize: { X: tileSizeX, Y: tileSizeY },
+    sizes: {
+      board: { x: boardSizeX, y: boardSizeY },
+      tile: { x: tileSizeX, y: tileSizeY },
+    },
     tilePicArray,
   };
 };
