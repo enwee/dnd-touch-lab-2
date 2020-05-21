@@ -1,4 +1,4 @@
-# jigsaw
+# jigsaw generator
 ### A Javascript jigsaw puzzle generator using only web-browser* APIs
 ###### _(*Chrome, Firefox - wip for webkit/safari, IE, pre-blink Edge)_
 #### with support for mouse and touchscreen control
