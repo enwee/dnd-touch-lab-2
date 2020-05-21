@@ -23,11 +23,11 @@
 ```javascript
 import jigsaw from "./jigsaw.js";
 
-const startGame = async () => {
+const startGame = async () => { //**
   const { sizes, tilePicArray } 
     = await jigsaw(imgSrcUrl, puzzleColumns, puzzleWidthPx)
   
   //game logic/layout code here
 }
 ```
-###### _(*awaiting [Top-Level-Await](https://v8.dev/features/top-level-await) to be implemented in browser)_
+###### _(**awaiting [Top-Level-Await](https://v8.dev/features/top-level-await) to be implemented in browser)_
