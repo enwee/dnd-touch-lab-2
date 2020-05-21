@@ -1,12 +1,12 @@
 # jigsaw generator
-### A Javascript jigsaw puzzle generator using only web-browser* APIs
+### A Javascript jigsaw puzzle generator using web-browser* APIs
 ###### _(*Chrome, Firefox - wip for webkit/safari, IE, pre-blink Edge)_
 #### with support for mouse and touchscreen control
-![screenshot 1](https://enwee.github.io/pics/jigsaw-small.gif)
-![placeholder](https://enwee.github.io/pics/jigsaw1-small.gif)
+![scatter/solve](https://enwee.github.io/pics/jigsaw-small.gif)
+![game/play](https://enwee.github.io/pics/jigsaw1-small.gif)
 
 ### Select any picture and also change the size of puzzle pieces
-![placeholder](https://enwee.github.io/pics/jigsaw2-small.gif)
+![change pic/size](https://enwee.github.io/pics/jigsaw2-small.gif)
 
 * ```jigsaw.js``` uses HTML 5 Canvas API to generate puzzle pieces
 * given (when called with) 
@@ -23,7 +23,7 @@
 ```javascript
 import jigsaw from "./jigsaw.js";
 
-const startGame = async () => { //**
+const startGame = async () => { //remove in future**
   const { sizes, tilePicArray } 
     = await jigsaw(imgSrcUrl, puzzleColumns, puzzleWidthPx)
   
