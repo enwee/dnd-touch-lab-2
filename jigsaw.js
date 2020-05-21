@@ -24,16 +24,16 @@ export default async (imgSrc, boardCols, boardPxWidth) => {
 
   for (let tileIndex = 0; tileIndex < pieces; tileIndex++) {
     if ((tileIndex + 1) % cols === 0) {
-      tileEdgeArray[tileIndex][rightEdge] = "picEdge";
-      tileEdgeArray[(tileIndex + 1) % pieces][leftEdge] = "picEdge";
+      tileEdgeArray[tileIndex][rightEdge] = null;
+      tileEdgeArray[(tileIndex + 1) % pieces][leftEdge] = null;
     } else {
       const extendEdge = Math.random() < 0.5;
       tileEdgeArray[tileIndex][rightEdge] = extendEdge;
       tileEdgeArray[tileIndex + 1][leftEdge] = !extendEdge;
     }
     if (Math.ceil((tileIndex + 1) / cols) === rows) {
-      tileEdgeArray[tileIndex][btmEdge] = "picEdge";
-      tileEdgeArray[(tileIndex + cols) % pieces][topEdge] = "picEdge";
+      tileEdgeArray[tileIndex][btmEdge] = null;
+      tileEdgeArray[(tileIndex + cols) % pieces][topEdge] = null;
     } else {
       const extendEdge = Math.random() < 0.5;
       tileEdgeArray[tileIndex][btmEdge] = extendEdge;
@@ -42,18 +42,19 @@ export default async (imgSrc, boardCols, boardPxWidth) => {
   } //sets the edges of every piece
 
   const cropPuzzlePiece = (x, y, tileIndex) => {
+    const tile = tileEdgeArray[tileIndex];
     const canvas = document.createElement("canvas");
     const canvasCtx = canvas.getContext("2d");
     canvas.width = Math.ceil(tileSizeX * 1.5);
     canvas.height = Math.ceil(tileSizeY * 1.5);
     canvasCtx.translate(canvas.width / 2, canvas.height / 2);
 
-    tileEdgeArray[tileIndex].forEach((extend, edge) => {
+    tile.forEach((extend, edge) => {
       const rotatedX = edge % 2 ? tileSizeY : tileSizeX;
       const rotatedY = edge % 2 ? tileSizeX : tileSizeY;
       if (!extend) canvasCtx.translate(-1, 0);
       if (!edge) canvasCtx.moveTo(-tileSizeX / 2, tileSizeY / 2);
-      if (extend !== "picEdge") {
+      if (extend !== null) {
         const tileSize = edge % 2 ? tileSizeY : tileSizeX;
         //prettier-ignore
         canvasCtx.arc(-tileSize / 2, 0, tileSize/4,
@@ -67,12 +68,23 @@ export default async (imgSrc, boardCols, boardPxWidth) => {
     canvasCtx.clip();
     //prettier-ignore
     canvasCtx.drawImage(scaledPic,
-        x - tileSizeX / 4, y - tileSizeY / 4, canvas.width, canvas.height,
-        -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+      x - tileSizeX / 4, y - tileSizeY / 4, canvas.width, canvas.height,
+      -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
 
-    return canvas.toDataURL();
+    //consider to get 1px extra in canvas instead of piece
+    const piece = document.createElement("canvas");
+    const pieceCtx = piece.getContext("2d");
+    piece.width = (4 + tile[leftEdge] + tile[rightEdge]) * (tileSizeX / 4) + 2;
+    piece.height = (4 + tile[topEdge] + tile[btmEdge]) * (tileSizeY / 4) + 2;
+    //prettier-ignore
+    pieceCtx.drawImage(canvas,
+      (!tile[leftEdge] * tileSizeX / 4)-1, (!tile[topEdge] * tileSizeY / 4)-1,
+      piece.width, piece.height, 0, 0, piece.width, piece.height);
+
+    return piece.toDataURL();
   };
 
+  //why not each piece have its own pieceSize info?
   const tilePicArray = [];
   for (let y = 0; y < boardSizeY; y += tileSizeY) {
     for (let x = 0; x < boardSizeX; x += tileSizeX) {
@@ -80,8 +92,12 @@ export default async (imgSrc, boardCols, boardPxWidth) => {
       const edges = Object.fromEntries(
         tileEdgeArray[tileIndex].map((extend, edge) => [edgeName[edge], extend])
       );
-      const leftOffset = tileSizeX * (tilePicArray.length % cols);
-      const topOffset = tileSizeY * Math.floor(tilePicArray.length / cols);
+      const leftOffset =
+        tileSizeX * (tilePicArray.length % cols) +
+        (tileSizeX / 4) * !tileEdgeArray[tileIndex][leftEdge];
+      const topOffset =
+        tileSizeY * Math.floor(tilePicArray.length / cols) +
+        (tileSizeY / 4) * !tileEdgeArray[tileIndex][topEdge];
       const base64Url = cropPuzzlePiece(x, y, tileIndex);
       tilePicArray.push({ edges, leftOffset, topOffset, base64Url });
     }

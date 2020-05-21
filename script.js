@@ -83,10 +83,14 @@ const startGame = async () => {
     piece.animateTile();
 
     const moveTile = (pageX, pageY) => {
-      piece.style.left = `${pageX - sizes.tile.x * 0.75 - board.offsetLeft}px`;
-      piece.style.top = `${pageY - sizes.tile.y * 0.75 - board.offsetTop}px`;
+      const midX = ((tilePicArray[index].edges.left + 2) * sizes.tile.x) / 4;
+      const midY = ((tilePicArray[index].edges.top + 2) * sizes.tile.y) / 4;
+
+      piece.style.left = `${pageX - midX - board.offsetLeft}px`;
+      piece.style.top = `${pageY - midY - board.offsetTop}px`;
     };
 
+    //to-do snap-on on correct drop calculation
     const dropTile = (pageX, pageY) => {
       const x = pageX - sizes.tile.x / 4 - board.offsetLeft;
       const y = pageY - sizes.tile.y / 4 - board.offsetTop;
@@ -115,7 +119,9 @@ const startGame = async () => {
       e.preventDefault(); //cos ff draggable="false" !working
       if (!completed[index]) {
         isDragging = true;
+        piece.style.transition = "all 0.1s ease-in-out";
         moveTile(e.pageX, e.pageY);
+        setTimeout(() => (piece.style.transition = "none"), 100);
         piece.style.zIndex = ++z;
       }
     };
@@ -133,7 +139,9 @@ const startGame = async () => {
     //prettier-ignore
     piece.addEventListener("touchstart", (e) => {
       if (!completed[index]) {
+        piece.style.transition = "all 0.1s ease-in-out";
         moveTile(e.touches[0].pageX, e.touches[0].pageY);
+        setTimeout(() => (piece.style.transition = "none"), 100);
         piece.style.zIndex = ++z;
       }
     }, {passive: true});
