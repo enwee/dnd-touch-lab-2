@@ -1,7 +1,8 @@
-# jigsaw generator
-### A Javascript jigsaw puzzle generator using web-browser* APIs
+# 🧩 jigsaw
+### A Javascript jigsaw puzzle piece generator using web-browser* APIs
 ###### _(*Chrome, Firefox - wip for webkit/safari, IE, pre-blink Edge)_
-#### with support for mouse and touchscreen control
+### Cuts a source image into a collection of jigsaw piece images 
+###### _([Shown](https://enwee.github.io/jigsaw) in a game layout for __mouse/touchscreen__ control)_
 ![scatter/solve](https://enwee.github.io/pics/jigsaw-small.gif)
 ![game/play](https://enwee.github.io/pics/jigsaw1-small.gif)
 
