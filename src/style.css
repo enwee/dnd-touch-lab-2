@@ -10,11 +10,11 @@ body {
 }
 
 #puzzleCols {
-  width: 2.5em;
+  width: 2.25em;
 }
 
 #puzzleWidth {
-  width: 3.5em;
+  width: 3.25em;
 }
 
 .btn {
@@ -28,32 +28,32 @@ body {
   color: black;
 }
 
-.hidden {
+.notShown {
   opacity: 0;
   position: absolute;
   z-index: -1;
 }
 
-#board {
+#puzzle {
   position: relative;
   outline: 1px solid;
-  margin: 0 auto;
+  outline-offset: -2px;
+  margin: 3em auto;
 }
 
 .hint {
-  position: absolute;
   opacity: 20%;
   visibility: hidden;
 }
 
-#cheat:checked ~ #board {
+#hint:checked ~ #puzzle {
   outline: none;
 }
 
-#cheat:checked ~ #board > .hint {
+#hint:checked ~ #puzzle > .hint {
   visibility: visible;
 }
 
-.tile {
+.piece {
   position: absolute;
 }

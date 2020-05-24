@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Canvas</title>
-    <link rel="stylesheet" href="style.css" />
-    <script type="module" src="script.js" defer></script>
+    <title>jigsaw</title>
+    <link rel="icon" href="image/favicon.ico" />
+    <link rel="stylesheet" href="src/style.css" />
+    <script type="module" src="src/script.js" defer></script>
   </head>
   <body>
     <label for="puzzleCols">Columns</label>
@@ -16,13 +17,13 @@
     <input type="number" id="puzzleWidth" min="300" max="1200" step="50"/>
     &nbsp
     <label for="image" class="btn">Choose Image</label>
-    <input type="file" id="image" accept="image/*" class="hidden" />
+    <input type="file" id="image" accept="image/*" class="notShown" />
     &nbsp
     <label for="gameStart" id="play" class="btn">Play!</label>
-    <button id="gameStart" class="hidden"></button>
+    <button id="gameStart" class="notShown"></button>
     &nbsp
-    <input type="checkbox" id="cheat" />
-    <label for="cheat">cheat</label>
-    <div id="board"></div>
+    <input type="checkbox" id="hint" />
+    <label for="hint">show hint</label>
+    <div id="puzzle"></div>
   </body>
 </html>
