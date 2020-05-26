@@ -56,8 +56,9 @@ export default async (imgSrc, boardCols, boardPxWidth) => {
       canvasCtx.lineTo(-(rotatedWidth / 2 + px), rotatedHeight / 2 + px);
       if (extend !== null) {
         //prettier-ignore
-        canvasCtx.arc(-(rotatedWidth / 2 + px), 0, rotatedWidth/4,
-          Math.PI / 180 * 90, Math.PI / 180 * 270, !extend);
+        canvasCtx.ellipse(-(rotatedWidth / 2 + px), 0,
+          rotatedWidth / 4 - px, rotatedWidth / 4, 0,
+          (Math.PI / 180) * 90, (Math.PI / 180) * 270, !extend);
       }
       canvasCtx.lineTo(-(rotatedWidth / 2 + px), -(rotatedHeight / 2 + px));
       canvasCtx.rotate((Math.PI / 180) * 90);
