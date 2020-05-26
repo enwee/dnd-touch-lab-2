@@ -1,6 +1,7 @@
 export default async (imgSrc, boardCols, boardPxWidth) => {
   const img = new Image();
   img.src = imgSrc;
+  img.crossOrigin = "Anonymous";
   await img.decode().catch(alert);
 
   const aspect = img.naturalWidth / img.naturalHeight;
@@ -47,25 +48,26 @@ export default async (imgSrc, boardCols, boardPxWidth) => {
     canvas.width = tileWidth * 1.5;
     canvas.height = tileHeight * 1.5;
     canvasCtx.translate(canvas.width / 2, canvas.height / 2);
+    const px = 1; //edge overlap
 
     edges.forEach((extend, edge) => {
       const rotatedWidth = edge % 2 ? tileHeight : tileWidth;
       const rotatedHeight = edge % 2 ? tileWidth : tileHeight;
-      canvasCtx.lineTo(-rotatedWidth / 2 - 2, rotatedHeight / 2);
+      canvasCtx.lineTo(-(rotatedWidth / 2 + px), rotatedHeight / 2 + px);
       if (extend !== null) {
         //prettier-ignore
-        canvasCtx.arc(-rotatedWidth / 2, 0, rotatedWidth/4 - !extend,
+        canvasCtx.arc(-(rotatedWidth / 2 + px), 0, rotatedWidth/4,
           Math.PI / 180 * 90, Math.PI / 180 * 270, !extend);
       }
-      canvasCtx.lineTo(-rotatedWidth / 2 - 2, -rotatedHeight / 2);
+      canvasCtx.lineTo(-(rotatedWidth / 2 + px), -(rotatedHeight / 2 + px));
       canvasCtx.rotate((Math.PI / 180) * 90);
     });
 
     canvasCtx.clip();
     //prettier-ignore
     canvasCtx.drawImage(scaledPic,
-     x - tileWidth / 4, y - tileHeight / 4, canvas.width, canvas.height,
-     -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+      x - tileWidth / 4, y - tileHeight / 4, canvas.width, canvas.height,
+      -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
 
     const pieceImg = document.createElement("canvas");
     const pieceImgCtx = pieceImg.getContext("2d");

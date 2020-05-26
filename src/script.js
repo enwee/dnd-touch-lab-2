@@ -1,7 +1,8 @@
 import jigsaw from "./jigsaw.js";
 import { bgColor, randomInt } from "./constants.js";
 
-let imgSrc = "./image/stamp.jpg";
+let imgSrc =
+  new URL(document.location).searchParams.get("img") || "./image/stamp.jpg";
 puzzleCols.value = 6;
 puzzleWidth.value = Math.trunc(document.body.clientWidth * 0.8);
 let scatter = false;
