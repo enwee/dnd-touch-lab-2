@@ -35,7 +35,7 @@ const startGame = async () => {
     puzzle.removeChild(puzzle.lastChild);
   }
   //prettier-ignore
-  const {board, tile, pieces}
+  const { board, tile, pieces }
     = await jigsaw(imgSrc, puzzleCols.value, puzzleWidth.value).catch(alert);
 
   puzzle.style.width = `${board.width}px`;
